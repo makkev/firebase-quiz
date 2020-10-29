@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import Question from '../components/question.component';
+import { loadQuestions } from '../utils/questions.utils';
 
 class Game extends Component {
   constructor(props) {
@@ -8,60 +9,31 @@ class Game extends Component {
     this.state = {
       questions: null,
       currentQuestion: null,
+      loading: true,
     };
   }
 
   async componentDidMount() {
-    const url =
-      'https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=multiple';
-
     try {
-      const res = await fetch(url);
-      const { results } = await res.json();
-
-      const questions = results.map(loadedQuestion => {
-        const formattedQuestion = {
-          question: loadedQuestion.question,
-          answerChoices: [...loadedQuestion.incorrect_answers],
-        };
-
-        formattedQuestion.answer = Math.floor(Math.random() * 4);
-
-        formattedQuestion.answerChoices.splice(
-          formattedQuestion.answer,
-          0,
-          loadedQuestion.correct_answer
-        );
-
-        return formattedQuestion;
+      const questions = await loadQuestions();
+      this.setState({
+        questions,
+        currentQuestion: questions[0],
+        loading: false,
       });
-
-      this.setState({ questions, currentQuestion: questions[0] });
-
-      console.log('results: ', results);
-      console.log('questions: ', questions);
     } catch (err) {
       console.error(err);
     }
-
-    // fetch(url)
-    //   .then(res => {
-    //     console.log('res: ', res);
-    //     return res.json();
-    //   })
-    //   .then(({ results }) => {
-    //     console.log('results: ', results);
-    //   })
-    //   .catch(err => {
-    //     console.error(err);
-    //   });
   }
 
   render() {
     const { currentQuestion } = this.state;
     return (
       <>
-        {this.state.currentQuestion && <Question question={currentQuestion} />}
+        {this.state.loading && <div id="loader"></div>}
+        {!this.state.loading && this.state.currentQuestion && (
+          <Question question={currentQuestion} />
+        )}
       </>
     );
   }
