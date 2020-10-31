@@ -36,6 +36,10 @@ class Game extends Component {
     }
   }
 
+  scoreSaved = () => {
+    this.props.history.push('/');
+  };
+
   changeQuestion = (bonus = 0) => {
     const { questions } = this.state;
 
@@ -83,7 +87,7 @@ class Game extends Component {
         )}
         {done && (
           <h1>
-            <SaveScoreForm score={score} />
+            <SaveScoreForm score={score} scoreSaved={this.scoreSaved} />
           </h1>
         )}
       </>

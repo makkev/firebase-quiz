@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { useFirebase } from './firebase/firebase-context';
 
-const SaveScoreForm = ({ score }) => {
+const SaveScoreForm = ({ score, scoreSaved }) => {
   const [username, setUserName] = useState('');
   const firebase = useFirebase();
 
@@ -19,7 +19,10 @@ const SaveScoreForm = ({ score }) => {
       name: username,
       score,
     };
-    console.log(record);
+
+    firebase.scores().push(record, () => {
+      scoreSaved();
+    });
   };
 
   return (
