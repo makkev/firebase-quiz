@@ -8,7 +8,8 @@ import SaveScoreForm from '../components/save-score-form.component';
 class Game extends Component {
   constructor(props) {
     super(props);
-
+    console.log(process.env.REACT_APP_API_KEY);
+    console.log('auth domain: ', process.env.REACT_APP_AUTH_DOMAIN);
     this.state = {
       questions: null,
       currentQuestion: null,
