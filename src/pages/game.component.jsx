@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import Question from '../components/question.component';
 import { loadQuestions } from '../utils/questions.utils';
+import HUD from '../components/hud.component';
 
 class Game extends Component {
   constructor(props) {
@@ -12,6 +13,7 @@ class Game extends Component {
       currentQuestion: null,
       loading: true,
       score: 0,
+      questionNumber: 0,
     };
   }
 
@@ -43,22 +45,26 @@ class Game extends Component {
       currentQuestion,
       loading: false,
       score: (prevState.score += bonus),
+      questionNumber: (prevState.questionNumber += 1),
     }));
 
     console.log('score: ', this.state.score);
   };
 
   render() {
-    const { currentQuestion } = this.state;
+    const { currentQuestion, score, questionNumber } = this.state;
     return (
       <>
         {this.state.loading && <div id="loader"></div>}
-        <p>Score: {this.state.score}</p>
         {!this.state.loading && this.state.currentQuestion && (
-          <Question
-            question={currentQuestion}
-            changeQuestion={this.changeQuestion}
-          />
+          <>
+            <HUD score={score} questionNumber={questionNumber} />
+            <p>Score: {this.state.score}</p>
+            <Question
+              question={currentQuestion}
+              changeQuestion={this.changeQuestion}
+            />
+          </>
         )}
       </>
     );
