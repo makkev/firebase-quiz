@@ -7,8 +7,6 @@ const SaveScoreForm = ({ score, scoreSaved }) => {
   const [username, setUserName] = useState('');
   const firebase = useFirebase();
 
-  console.log('firebase: ', firebase);
-
   const onUsernameChange = ({ target: { value } }) => {
     setUserName(value);
   };

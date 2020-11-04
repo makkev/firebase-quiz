@@ -13,7 +13,7 @@ const HighScores = () => {
       setScores(sortedScores);
       setLoading(false);
     });
-  });
+  }, [firebase]);
 
   const formatScoreData = firebaseScores => {
     const scores = [];
@@ -29,11 +29,11 @@ const HighScores = () => {
   };
 
   return (
-    <div>
+    <>
       {loading && <div id="loader"></div>}
       {!loading && (
         <>
-          <h1>High Scores!!!</h1>
+          <h1>High Scores</h1>
           <div id="highScoresList">
             {scores.map(record => (
               <li key={record.key} className="high-score">
@@ -43,7 +43,7 @@ const HighScores = () => {
           </div>
         </>
       )}
-    </div>
+    </>
   );
 };
 
